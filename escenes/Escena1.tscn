@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Cossos estatics/Terra_Esquerra.tscn" type="PackedScene" id=1]
+[ext_resource path="res://personatge/Personatge.tscn" type="PackedScene" id=2]
+[ext_resource path="res://escenes/Escena1.gd" type="Script" id=3]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Terra" parent="." instance=ExtResource( 1 )]
+position = Vector2( 36, 11 )
+
+[node name="KinematicBody2D" parent="." instance=ExtResource( 2 )]
+position = Vector2( 667, 524 )
+script = null
