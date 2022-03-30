@@ -1,48 +1,55 @@
+extends KinematicBody2D
 extends Area2D
 
+var velocitat_base = 200
+var direccio = Vector2.DOWN
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-export var velocitat = 300
-var velocitat_angular = 90
-var direccio = Vector2(0,0)
+var velocitat = Vector2.ZERO
+var gravetat = Vector2.DOWN * 980
+var velocitat_salt = -300
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
+var num_salt = 0
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	direccio = Vector2.ZERO
-	#position += Vector2(3,0) #Fa que el objecte es mogui
-	#rotation_degrees += 2 #Fa rotar el objecte sobre si mateix
+var vida = 5
+
+if vida < 1:
+	position 
+
+func _physics_process(delta):
+	velocitat.x = 0
+	velocitat += gravetat * delta
 	if Input.is_action_pressed("mou dreta"):
-		direccio += Vector2.RIGHT
+		velocitat += Vector2.RIGHT * velocitat_base
 	if Input.is_action_pressed("mou esquerra"):
-		direccio += Vector2.LEFT
-	if Input.is_action_pressed("mou adalt"):
-		direccio += Vector2.UP
-	if Input.is_action_pressed("mou abaix"):
-		direccio += Vector2.DOWN
-	position += direccio.normalized() * velocitat * delta
+		velocitat += Vector2.LEFT * velocitat_base
+		
+	if Input.is_action_just_pressed("mou adalt"):
+		if num_salt == 2:
+			num_salt = 1
+			velocitat.y = velocitat_salt 
+		if num_salt == 1:
+			num_salt = 0
+			velocitat.y = velocitat_salt 
+		if num_salt == 0:
+			pass
+		if is_on_floor():
+			num_salt = 2
+			
+		
 	
-	if position.x >= 1040:
-		position.x = 1039
-	if position.x <= 0:
-		position.x = 1
-	if position.y >= 600:
-		position.y = 599
-	if position.y <= 0:
-		position.y = -1
-	
+	velocitat = move_and_slide(velocitat, Vector2.UP)
+	animacio(velocitat)
+func animacio(velocitat):
+	if velocitat.x > 0:
+		$AnimatedSprite.play("caminar")
+		$AnimatedSprite.flip_h = false
+	elif velocitat.x < 0:
+		$AnimatedSprite.play("caminar")
+		$AnimatedSprite.flip_h = true
+	if abs(velocitat.x) < 0.1:
+		$AnimatedSprite.play("stand")
+	if velocitat.y > 0:
+		$AnimatedSprite.play("saltar")
+
 func _on_Personatge_area_entered(area:Area2D):
-	if area.is_in_group("final"):
-		modulate = Color(1, 0, 0)
-	if area.is_in_group("inici"):
-		modulate = Color(3, 0.4, 0.1)
-	area.modulate = Color (0, 1, 0)
 	
-func _on_Personatge_area_exited(area:Area2D):
-	modulate = Color(1, 1, 1)
-	area.modulate = Color (1, 1, 1)
