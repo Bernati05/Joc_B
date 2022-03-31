@@ -1,5 +1,4 @@
 extends KinematicBody2D
-extends Area2D
 
 var velocitat_base = 200
 var direccio = Vector2.DOWN
@@ -12,8 +11,8 @@ var num_salt = 0
 
 var vida = 5
 
-if vida < 1:
-	position 
+func _ready():
+	position = Vector2(200,200)
 
 func _physics_process(delta):
 	velocitat.x = 0
@@ -34,6 +33,9 @@ func _physics_process(delta):
 			pass
 		if is_on_floor():
 			num_salt = 2
+	if vida < 1:
+		position.x = 200
+		position.y = 200
 			
 		
 	
@@ -51,5 +53,6 @@ func animacio(velocitat):
 	if velocitat.y > 0:
 		$AnimatedSprite.play("saltar")
 
-func _on_Personatge_area_entered(area:Area2D):
-	
+func _on_Area2D_area_entered(area:Area2D):
+	if area.is_in_group("morir"):
+		vida = 0

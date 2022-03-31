@@ -16,14 +16,14 @@ animations = [ {
 "name": "saltar",
 "speed": 6.0
 }, {
-"frames": [ ExtResource( 4 ) ],
-"loop": true,
-"name": "stand",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 1 ), ExtResource( 3 ) ],
 "loop": true,
 "name": "caminar",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "stand",
 "speed": 5.0
 } ]
 
